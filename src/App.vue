@@ -11,7 +11,7 @@
     }
 </script>
 <style lang="less">
-    @import './styles/common/index.less';
+    @import './styles/index';
 </style>
 
 

@@ -15,5 +15,10 @@ export default new Router({
       name: 'qy-icon',
       component: () => import('@/views/qy-icon')
     },
+    {
+      path: '/qy-button',
+      name: 'qy-button',
+      component: () => import('@/views/qy-button')
+    },
   ]
 })
