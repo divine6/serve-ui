@@ -1,6 +1,15 @@
 <template>
-    <button :class="classes">
-        <slot></slot>
+    <button :class="classes"
+            :disabled="disabled"
+            @click="handleClickLink">
+        <qy-icon class="loading-loop"
+                 name="ios-loading"
+                 v-if="loading"></qy-icon>
+        <qy-icon :name="icon"
+                 v-if="icon && !loading"></qy-icon>
+        <span v-if="showSlot">
+            <slot></slot>
+        </span>
     </button>
 </template>
 
@@ -24,16 +33,54 @@
             soul: {
                 type: Boolean,
                 default: false
+            },
+            loading: {
+                type: Boolean,
+                default: false
+            },
+            long: {
+                type: Boolean,
+                default: false
+            },
+            cicle: {
+                type: Boolean,
+                default: false
+            },
+            icon: {
+                type: String,
+                default: ''
+            },
+            size: {
+                type: String,
+                default: 'default'
+            },
+            disabled: {
+                type: Boolean,
+                default: false
             }
         },
         computed: {
+            showSlot() {
+                return !!this.$slots.default
+            },
             classes() {
                 return [
                     `${prefixCls}`,
                     `${this.type}`,
+                    this.long ? `${prefixCls}-long` : '',
+                    this.cicle ? `${prefixCls}-cicle` : '',
+                    this.size !== 'default' ? `${prefixCls}-${this.size}` : `${prefixCls}-default`,
+                    this.cicle ? `${prefixCls}-only-icon` : '',
                     this.linear ? `linear-${this.type}` : '',
-                    this.soul ? `soul-${this.type}` : ''
+                    this.soul ? `soul-${this.type}` : '',
+                    this.disabled ? `${prefixCls}-disabled` : '',
+                    !this.showSlot && (!!this.icon || this.loading) ? 'qy-icon-only' : '',
                 ]
+            }
+        },
+        methods: {
+            handleClickLink(event) {
+                this.$emit('click', event);
             }
         }
     }
@@ -46,6 +93,21 @@
     @warning-color: #ff9900; // 警告
     @error-color: #ed4014; // 错误
     @normal-color: #f2f2f2; // 正常
+    @keyframes ani-load-loop {
+        from {
+            transform: rotate(0deg);
+        }
+        50% {
+            transform: rotate(180deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    .loading-loop {
+        // Loading for loop
+        animation: ani-load-loop 1s linear infinite;
+    }
     .qy-btn {
         line-height: 1.5;
         position: relative;
@@ -63,18 +125,42 @@
         padding: 0 15px;
         font-size: 14px;
         border-radius: 4px;
-        border: 1px solid #d9d9d9;
+        border: 1px solid transparent;
         &:active,
         &:focus {
             outline: 0;
         }
+        &-samll {
+            height: 24px;
+            padding: 0 7px;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+        &-default {
+            height: 24px;
+            padding: 0 12px;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+        &-large {
+            height: 40px;
+            padding: 0 15px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
         // 默认
         &.default {
             .typeStyle(#fff, #515a6e);
+            border: 1px solid #dcdee2;
             &:hover,
             &:active {
                 border: 1px solid @primary-color;
                 color: @primary-color;
+            }
+            &:disabled {
+                color: #c5c8ce;
+                border-color: #dcdee2;
+                background-color: #f7f7f7;
             }
         }
         &.dashed {
@@ -148,7 +234,7 @@
             background: linear-gradient(
                 left,
                 #fa6c9f 0%,
-                #ff9100 30%,
+                #ed4014 80%,
                 #ed4014 100%
             );
         }
@@ -169,39 +255,82 @@
         }
         // 灵魂
         &.soul-primary {
-            background: #fff;
+            background: transparent;
             color: @primary-color;
             border: 1px solid @primary-color;
+            &:hover {
+                background: #fff;
+            }
         }
         &.soul-info {
-            background: #fff;
+            background: transparent;
             color: @info-color;
             border: 1px solid @info-color;
+            &:hover {
+                background: #fff;
+            }
         }
         &.soul-success {
-            background: #fff;
+            background: transparent;
             color: @success-color;
             border: 1px solid @success-color;
+            &:hover {
+                background: #fff;
+            }
         }
         &.soul-warning {
-            background: #fff;
+            background: transparent;
             color: @warning-color;
             border: 1px solid @warning-color;
+            &:hover {
+                background: #fff;
+            }
         }
         &.soul-error {
-            background: #fff;
+            background: transparent;
             color: @error-color;
             border: 1px solid @error-color;
+            &:hover {
+                background: #fff;
+            }
+        }
+        // 长按钮
+        &.qy-btn-long {
+            width: 100%;
+        }
+        // 圆形按钮
+        &.qy-btn-cicle {
+            border-radius: 32px;
+        }
+        &.qy-btn-icon-only {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            font-size: 16px;
+            border-radius: 50%;
         }
         // 样式函数
         .typeStyle(@bg,@color) {
             background: @bg;
             color: @color;
+            &:active,
             &:hover {
                 opacity: 0.8;
             }
-            &:active {
-                opacity: 1;
+        }
+        // 规格函数
+        .sizeStyle(@height; @padding; @font-size; @border-radius) {
+            height: @height;
+            padding: @padding;
+            font-size: @font-size;
+            border-radius: @border-radius;
+        }
+        &-disabled {
+            cursor: not-allowed;
+            color: #c5c8ce;
+            border-color: #dcdee2;
+            > * {
+                pointer-events: none;
             }
         }
     }
