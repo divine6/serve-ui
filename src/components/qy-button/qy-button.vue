@@ -136,15 +136,9 @@
             font-size: 14px;
             border-radius: 3px;
         }
-        &-default {
-            height: 24px;
-            padding: 0 12px;
-            font-size: 14px;
-            border-radius: 3px;
-        }
         &-large {
             height: 40px;
-            padding: 0 15px;
+            padding: 0 20px;
             font-size: 16px;
             border-radius: 4px;
         }
