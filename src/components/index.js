@@ -1,10 +1,12 @@
 
 import Vue from 'vue'
-import qyIcon from './qy-icon/qy-icon'
-import qyButton from './qy-button/qy-button'
-import qyButtonGroup from './qy-button/qy-button-group'
+import Icon from './qy-icon/qy-icon'
+import Button from './qy-button/qy-button'
+import ButtonGroup from './qy-button/qy-button-group'
+import Alert from './qy-alert/qy-alert'
 
-Vue.component('qy-icon', qyIcon)
-Vue.component('qy-button', qyButton)
-Vue.component('qy-btn-group', qyButtonGroup)
+Vue.component('qy-icon', Icon)
+Vue.component('qy-button', Button)
+Vue.component('qy-btn-group', ButtonGroup)
+Vue.component('qy-alert', Alert)
 

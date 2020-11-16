@@ -20,5 +20,10 @@ export default new Router({
       name: 'qy-button',
       component: () => import('@/views/qy-button')
     },
+    {
+      path: '/qy-alert',
+      name: 'qy-alert',
+      component: () => import('@/views/qy-alert')
+    },
   ]
 })
