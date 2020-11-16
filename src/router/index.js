@@ -25,5 +25,15 @@ export default new Router({
       name: 'qy-alert',
       component: () => import('@/views/qy-alert')
     },
+    {
+      path: '/qy-card',
+      name: 'qy-card',
+      component: () => import('@/views/qy-card')
+    },
+    {
+      path: '/qy-collapse',
+      name: 'qy-collapse',
+      component: () => import('@/views/qy-collapse')
+    },
   ]
 })
